@@ -1,0 +1,156 @@
+---
+title: "Final"
+author: "Jimmy Peterson"
+date: "2025-07-29"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+#install Rmarkedown
+insatall.packages(tinytex")
+
+
+#if you wish to create PDFs or WOrk files from Latex install the following
+tinytex::install_tinytex()
+
+```{r, global-options, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+# The above options name the code chunk 'global options.' include = FALSE means this code chunk will not be rendered in the final document. The knitr package will create the report once rendered.
+
+```
+
+# Predictive Modeling of Student Employment Using R
+## Jimmy Peterson
+## GA Tech, Summer 2025
+
+### Abstract
+
+These data were obtained from Toxic Release Inventory (TRI) data from 1987-2022 that examined the effect of pollution on on infant birth outcomes (specifically, *birth weights*) in Louisiana's infamous **Cancer Alley**. The effects of pollutants (e.g., CS~2~) were analyzed per mile^2^.\
+These data are a part of an on-going project with my Professor. \newpage
+
+```{=html}
+<!-- 
+Below is a numbered list of topics in the submission. Note that you can also add a table of contents to the YAML header -->
+```
+
+### Table of Contents
+
+1.  First, a few papers on my topic, i.g., a Literature Review
+2.  More on my Data
+
+```{=html}
+<!--
+note that subtopics need to be indented. Below is an unordered list
+-->
+```
+
+-   Cleaning Goals
+    -   What worked from my Midterm plans
+    -   What did not work from the Midterm and why
+-   Analysis Goals
+    -   Tables
+    -   Viz
+
+
+\newpage
+
+### Background
+
+Use this section to talk about what motivates your project. Is this furthering your learning in data science? Or are you using this data in an ongoing capacity?
+Also, what has been written if anything about your topic? Give 1-2 citations.
+
+### Dataet Utilized
+#### Description of Dataset
+
+The College Student Placement Factors Dataset (the “Data”) to be utilized in the exercise is comprised of data associated with 10,000 college students from 100 colleges that applied for work post-graduation.  The Data includes nine independent variables related to a student’s academic performance and preparedness for the workplace and whether the student successfully achieved job placement (the dependent variable).
+
+#### Source of the Data
+
+The Data was sourced from Kaggle.com.  Kaggle.com is an online platform known for hosting data science competitions and providing a repository of free datasets for analysis and research.  The Data is licensed by MIT.edu and is described as “a realistic, large-scale synthetic database”. The Data was downloaded in CSV format. 
+
+#### View of Data
+
+```{r, import, echo = FALSE}
+# readr library to import   csv file
+  
+library(readr)
+library(tidyverse)
+# updating the working directory for import 
+
+setwd('C:/Users/Peter/OneDrive/Documents/Rsummer25')
+
+data <- read_csv("data/raw/data.csv", show_col_types = FALSE)
+
+summary(data)
+view(data)
+
+```
+
+#### Cleaning of the Data
+
+```{r}
+
+# Remove College_IDs from CLG0050 to CLG0100
+data <- data %>%  filter(!(College_ID >= "CLG0050" & College_ID <= "CLG0100"))
+
+#remove Prev_Semester_Results, Academic_Performance, Extra_Curricular_Score, Communication_Skills, Projects_Completed
+
+data <- data %>%
+  select(-Prev_Sem_Result, -Academic_Performance, -Extra_Curricular_Score, -Communication_Skills, -Projects_Completed)
+
+#change column and row names
+
+data <- data %>%
+  rename(
+    College = College_ID,
+    Internship = Internship_Experience,
+    GPA = CGPA
+      )
+# Remove College from CLG0050 to CLG0100
+data <- data %>%  filter(!(College >= "CLG0050" & College <= "CLG0100"))
+
+#change character objects into numbers in columns Internship and Placement
+
+data <- data %>%
+  mutate(
+    Internship = case_when(
+      Internship == "Yes" ~ 1,
+      Internship == "No" ~ 2,
+      TRUE ~ NA_real_
+    ),
+    Placement = case_when(
+      Placement == "Yes" ~ 1,
+      Placement == "No" ~ 2,
+      TRUE ~ NA_real_
+    )
+  )
+
+#change the College ID to simple number groupings
+
+data$College <- sub("^CLG00", "", data$College)
+summary(data)
+view(data)
+
+```
+
+\newpage
+
+### A Multiple Regression Model
+
+
+
+dfaddfad
+
+\newpage
+
+Now let's take a look at the regression summary.
+
+
+\newpage
+### Next Steps
+
+These are the Midterm goals that I was not (yet) able to accomplish and why.
